@@ -218,7 +218,7 @@
   }
 
   .arrow {
-    border: solid black;
+    border: solid rgb(255, 255, 255);
     border-width: 0 1px 1px 0;
     display: inline-block;
     padding: 30px;
@@ -486,16 +486,33 @@
   .main_title h1 {
         font-size: 60px;
     }
+    .quote img {
+        margin-right: 20px;
+    }
+    .quote_container{
+        flex-wrap: wrap;
+    }
+  .quote img {
+      margin-right: 0px;
+      margin-bottom: 30px;
+  }
+  .quote{
+      align-items: flex-start;
+  }
+  .arrow {
+      margin-top: 50px;
+      position: absolute;
+  }
+  .arrow.left {
+      right: 80%;
+  }
+  .arrow.right {
+      left: 80%;
+  };
   }
 
   @media screen and (max-width: 480px) {
-    .quote_container{
-          flex-wrap: wrap;
-      }
-    .quote img {
-        margin-right: 0px;
-        margin-bottom: 30px;
-    }
+
     }
 
   @media screen and (max-width: 375px) {
