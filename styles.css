@@ -277,6 +277,13 @@
     padding: 30px;
   }
 
+.arrow:active {
+    border-color: #ffffff5f;
+}
+.arrow:hover {
+    border-width: 0 2px 2px 0;
+}
+
   .arrow-right {
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
