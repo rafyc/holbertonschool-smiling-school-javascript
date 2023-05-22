@@ -8,6 +8,7 @@ menuBtn.addEventListener('click', function () {
 
 const getQuotes = () => {
   var xhttp = new XMLHttpRequest();
+  var loader = document.getElementById("loader");
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var jsonArray = JSON.parse(this.responseText);
@@ -18,17 +19,19 @@ const getQuotes = () => {
         let image = jsonArray[i].pic_url
         let quote = jsonArray[i].text
         let name = jsonArray[i].name
-        let tile = jsonArray[i].title
-        construct(image, quote, name, tile, index)
+        let title = jsonArray[i].title
+        construct(image, quote, name, title, index)
       }
       createSlider()
+      loader.style.display = "none";
     }
   }
-  url = '"https://smileschool-api.hbtn.info/quotes"'
-  xhttp.open("GET", './obj.json', true);
-  xhttp.send();
+  url = '"https://smileschool-api.hbtn.info/quotes'
+  setTimeout(function () {
+    xhttp.open("GET", './obj.json', true);
+    xhttp.send();
+  }, 2000)
 };
-
 
 
 
@@ -78,7 +81,7 @@ const createSlider = () => {
 
 
 
-const construct = (image, quote, name, tile, index) => {
+const construct = (image, quote, name, title, index) => {
   var slider = document.getElementsByClassName('slider-container')[0]
 
   // Create the main <div> element with class "slide" and "active"
@@ -99,6 +102,9 @@ const construct = (image, quote, name, tile, index) => {
   img.src = image;
   img.alt = "";
 
+  var contain = document.createElement("div");
+  contain.id = "contain";
+
   // Create the <blockquote> element with id "quote" and text content
   var blockquote = document.createElement("blockquote");
   blockquote.id = "quote";
@@ -112,17 +118,19 @@ const construct = (image, quote, name, tile, index) => {
   // Create the <p> element with class "subtitle_name" and text content
   var pSubtitleName = document.createElement("p");
   pSubtitleName.classList.add("subtitle_name");
-  pSubtitleName.innerText = tile;
+  pSubtitleName.innerText = title;
 
   // Append the elements to build the structure
+  contain.appendChild(blockquote);
+  contain.appendChild(pPersonName);
+  contain.appendChild(pSubtitleName);
+
   divQuoteContainer.appendChild(img);
-  divQuoteContainer.appendChild(blockquote);
-  divQuoteContainer.appendChild(pPersonName);
-  divQuoteContainer.appendChild(pSubtitleName);
+  divQuoteContainer.appendChild(contain);
 
   divSlide.appendChild(divQuoteContainer);
 
-  slider.appendChild(divSlide)
+  slider.appendChild(divSlide);
 
   // createSlider()
 
