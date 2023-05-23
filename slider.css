@@ -1,10 +1,21 @@
 .video_container {
     transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
+.player {
+    position: absolute;
+    top: 45px;
+    left: 85px;
+}
 .video {
     margin: 0 auto;
     overflow: hidden;
+    max-width: 1100px;
 }
+.video_container {
+    display: flex;
+    padding-bottom: 85px;
+
+  }
 #video-container {
     display: flex;
     align-items: center;
@@ -13,9 +24,11 @@
 #video-arrow {
     display: flex;
     position: absolute;
+    height: 30%;
     width: 100%;
     justify-content: space-between;
     max-width: 90%;
+    align-items: flex-end;
 }
 .video-arrow-right{
     content: '';

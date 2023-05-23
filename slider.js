@@ -5,7 +5,6 @@ const getCourse = () => {
     if (this.readyState == 4 && this.status == 200) {
       var jsonArray = JSON.parse(this.responseText);
       let length = jsonArray.length
-      console.log(jsonArray[0]);
       for (let i = 0; i < length; i++) {
         let index = i
         let image = jsonArray[i].thumb_url
@@ -32,7 +31,6 @@ const constructCourse = (image, titre, desc, author, authorPic, rating, time) =>
   // Create the first <div> element with class "video_element"
   var divVideoElement1 = document.createElement("div");
   divVideoElement1.classList.add("video_element");
-  console.log('created');
 
   // Create the first <div> element with class "player_container"
   var divPlayerContainer1 = document.createElement("div");
@@ -135,78 +133,59 @@ const createCourseSlider = () => {
 
   window.addEventListener("resize", function () {
     result = displayWindowSize();
-    console.log(result);
-    let container = document.getElementById('hidden')
-    let hiddenDiv = document.createElement('span')
-    hiddenDiv.textContent = result
-    container.appendChild(hiddenDiv)
-    if (container.childNodes.length > 1) {
-      container.removeChild(container.childNodes[0]);
+
+
+
+    // Main elements
+    let container = document.querySelector('.video')
+    let videoElement = document.querySelector('.video_element');
+    let carousel = document.querySelector('.video_container');
+    let left = document.querySelector('.video-arrow-left');
+    let right = document.querySelector('.video-arrow-right');
+    let item = document.querySelector('.video_element');
+    // how many elements to scroll
+    let n = 1;
+    let num = 0
+
+
+    // Carousel arrows left/right
+    right.addEventListener('click', function () {
+      num -= n * item.clientWidth
+      carousel.style.transform = `translateX(${num}px)`
+    });
+    left.addEventListener('click', function () {
+      num += n * item.clientWidth
+      carousel.style.transform = `translateX(${num}px)`
+    });
+
+    function displayWindowSize() {
+      let nbItemDisplayed = 4
+      // Get width and height of the window excluding scrollbars
+      var w = document.documentElement.clientWidth;
+
+      if (w > 1330) {
+        nbItemDisplayed = 4;
+      } else if (w > 900) {
+        nbItemDisplayed = 3;
+      } else if (w > 600) {
+        nbItemDisplayed = 2;
+      } else {
+        nbItemDisplayed = 1
+      }
+      return nbItemDisplayed
     }
+
+    // responsive
+    let videoElementWidth = videoElement.clientWidth
+
+    let nbItemDisplayed = result
+    console.log(`${result}`);
+    let sliderWidth = nbItemDisplayed * videoElementWidth
+    container.style.maxWidth = `${sliderWidth}px`
+    console.log(`${sliderWidth}px)`);
   });
-
-  // Main elements
-  let container = document.querySelector('.video')
-  let videoElement = document.querySelector('.video_element');
-  let carousel = document.querySelector('.video_container');
-  let left = document.querySelector('.video-arrow-left');
-  let right = document.querySelector('.video-arrow-right');
-  let item = document.querySelector('.video_element');
-  // how many elements to scroll
-  let n = 1;
-  let num = 0
-
-  // Helper functions: show/hide an element
-  // var show = function (elem) {
-  //   elem.style.visibility = 'visible';
-  // };
-  // var hide = function (elem) {
-  //   elem.style.visibility = 'hidden';
-  // };
-
-  // Carousel arrows left/right
-  right.addEventListener('click', function () {
-    num -= n * item.clientWidth
-    carousel.style.transform = `translateX(${num}px)`
-  });
-  left.addEventListener('click', function () {
-    num += n * item.clientWidth
-    carousel.style.transform = `translateX(${num}px)`
-  });
-
-  // responsive
-  let videoElementWidth = videoElement.clientWidth
-
-  let contain = document.getElementById('hidden')
-  let span = contain.getElementsByTagName('span')[0]
-  let rez = span.textContent
-  console.log(`val${rez}`);
-
-  let nbItemDisplayed = 4
-
-  let sliderWidth = nbItemDisplayed * videoElementWidth
-  container.style.maxWidth = `${sliderWidth}px`
-
-  // window size helper
-  function displayWindowSize() {
-    // Get width and height of the window excluding scrollbars
-    var w = document.documentElement.clientWidth;
-
-    if (w <= 1330) {
-      nbItemDisplayed = 3;
-    } else if (w <= 900) {
-      nbItemDisplayed = 2;
-    } else {
-      nbItemDisplayed = 4;
-    }
-    return nbItemDisplayed
-  }
-
-
-
-
-
 
 }
+
 getCourse()
 initResponsive()
