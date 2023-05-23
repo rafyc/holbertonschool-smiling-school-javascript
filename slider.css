@@ -11,6 +11,10 @@
     overflow: hidden;
     max-width: 1100px;
 }
+#loader-container {
+    display: flex;
+    height: 340px
+}
 .video_container {
     display: flex;
     padding-bottom: 85px;

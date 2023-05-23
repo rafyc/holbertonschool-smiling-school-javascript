@@ -1,6 +1,6 @@
 const getCourse = () => {
   var xhttp = new XMLHttpRequest();
-  var loader = document.getElementById("course-loader");
+  var loader = document.getElementById("loader-container");
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       var jsonArray = JSON.parse(this.responseText);
