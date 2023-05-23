@@ -252,6 +252,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
   }
 
   .slider-container .slide {
@@ -294,8 +295,8 @@
     width: 80px;
     height: 80px;
     animation: spin 2s linear infinite;
-    margin: auto;
     position: absolute;
+    margin-top: 150px;
     display: block;
 }
 
@@ -392,6 +393,9 @@
     flex-direction: column;
     position: relative;
 }
+.video_content > img:first-child {
+    width: 255px;
+}
   .video {
     display: flex;
     flex-direction: column;
@@ -401,7 +405,6 @@
   .video_container {
     display: flex;
     padding-bottom: 87px;
-    max-width: 1200px;
 
   }
   .video h1 {
@@ -584,9 +587,9 @@
 
 
   @media screen and (max-width: 768px) {
-    .slider {
+    /* .slider {
         display: block;
-      }
+      } */
     #next, #prev {
         bottom: 70px;
       }

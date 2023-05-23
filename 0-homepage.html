@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./slider.css" />
     <link rel="stylesheet" href="main.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -86,6 +87,8 @@
                 </div>
             </div>
         </section>
+
+        <!-- QUOTE SECTION -->
         <section class="quote">
             <div id="loader"></div>
             <div class="slider-nav">
@@ -100,13 +103,23 @@
             </div>
             </div>
         </section>
-        <section class="video">
-            <h1>Most&nbsp<b class="bold">popular</b>&nbsptutorials</h1>
-            <div class="video_container slider">
-                <div id="course-loader"></div>
 
-        </section>
+        <!-- COURSE SECTION -->
+        <div id='video-container'>
+            <div id="hidden"></div>
+            <div id="video-arrow">
+                <div class="video-arrow-left"></div>
+                <div class="video-arrow-right"></div>
+            </div>
+            <section class="video">
+                <h1>Most&nbsp<b class="bold">popular</b>&nbsptutorials</h1>
+                <div id="course-loader"></div>
+                <div class="video_container slider">
+                </div>
+            </section>
         </div>
+
+        <!-- MEMBERSHIP SECTION -->
         <section class="membership">
             <h1><b class="bold">Free</b>&nbspMembership</h1>
             <div class="membership_container">
@@ -133,6 +146,9 @@
             </div>
             <button>Register for free</button>
         </section>
+
+        <!-- FAQ SECTION -->
+
         <!-- <section class="faq">
             <h1>F.A.Q</h1>
             <div class="faq_container">
@@ -200,6 +216,7 @@
         </div>
     </footer>
     <script src="./index.js"></script>
+    <script src="./slider.js"></script>
 </body>
 
 </html>
