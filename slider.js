@@ -134,30 +134,6 @@ const createCourseSlider = () => {
   window.addEventListener("resize", function () {
     result = displayWindowSize();
 
-
-
-    // Main elements
-    let container = document.querySelector('.video')
-    let videoElement = document.querySelector('.video_element');
-    let carousel = document.querySelector('.video_container');
-    let left = document.querySelector('.video-arrow-left');
-    let right = document.querySelector('.video-arrow-right');
-    let item = document.querySelector('.video_element');
-    // how many elements to scroll
-    let n = 1;
-    let num = 0
-
-
-    // Carousel arrows left/right
-    right.addEventListener('click', function () {
-      num -= n * item.clientWidth
-      carousel.style.transform = `translateX(${num}px)`
-    });
-    left.addEventListener('click', function () {
-      num += n * item.clientWidth
-      carousel.style.transform = `translateX(${num}px)`
-    });
-
     function displayWindowSize() {
       let nbItemDisplayed = 4
       // Get width and height of the window excluding scrollbars
@@ -184,6 +160,32 @@ const createCourseSlider = () => {
     container.style.maxWidth = `${sliderWidth}px`
     console.log(`${sliderWidth}px)`);
   });
+
+
+
+  // Main elements
+  let container = document.querySelector('.video')
+  let videoElement = document.querySelector('.video_element');
+  let carousel = document.querySelector('.video_container');
+  let left = document.querySelector('.video-arrow-left');
+  let right = document.querySelector('.video-arrow-right');
+  let item = document.querySelector('.video_element');
+  // how many elements to scroll
+  let n = 1;
+  let num = 0
+
+
+  // Carousel arrows left/right
+  right.addEventListener('click', function () {
+    // if ()
+    num -= n * item.clientWidth
+    carousel.style.transform = `translateX(${num}px)`
+  });
+  left.addEventListener('click', function () {
+    num += n * item.clientWidth
+    carousel.style.transform = `translateX(${num}px)`
+  });
+
 
 }
 
