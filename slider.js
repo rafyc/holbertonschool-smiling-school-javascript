@@ -168,10 +168,25 @@ const createCourseSlider = (length) => {
     console.log(`${result}`);
     let sliderWidth = nbItemDisplayed * videoElementWidth
     container.style.maxWidth = `${sliderWidth}px`
-    console.log(`${sliderWidth}px)`);
+
   });
 
+  function displayWindowSize() {
+    let nbItemDisplayed = 4
+    // Get width and height of the window excluding scrollbars
+    var w = document.documentElement.clientWidth;
 
+    if (w > 1330) {
+      nbItemDisplayed = 4;
+    } else if (w > 900) {
+      nbItemDisplayed = 3;
+    } else if (w > 600) {
+      nbItemDisplayed = 2;
+    } else {
+      nbItemDisplayed = 1
+    }
+    return nbItemDisplayed
+  }
 
   // Main elements
   let container = document.querySelector('.video')
@@ -183,39 +198,29 @@ const createCourseSlider = (length) => {
   // how many elements to scroll
   let n = 1;
   let num = 0
+  let clickCount = 0;
+  let nbElem = displayWindowSize()
+
 
 
   // Carousel arrows left/right
-  var w = document.documentElement.clientWidth;
-  let nbItemDisplayed
-  if (w > 1330) {
-    nbItemDisplayed = 4;
-  } else if (w > 900) {
-    nbItemDisplayed = 3;
-  } else if (w > 600) {
-    nbItemDisplayed = 2;
-  } else {
-    nbItemDisplayed = 1
-  }
-  let numberOfItems = length
-  // console.log(sliderIndex);
-  let sliderIndex = 1 + nbItemDisplayed
-
 
   right.addEventListener('click', function () {
-    return function (event) {
-      if (sliderIndex <= numberOfItems) {
-        num -= n * item.clientWidth;
-        carousel.style.transform = `translateX(${num}px)`;
-        sliderIndex += 1;
-        console.log(sliderIndex);
-      }
-    };
-  }(numberOfItems));
+    if (clickCount < (length - (nbElem))) {
+      clickCount++;
+      num -= n * item.clientWidth
+      carousel.style.transform = `translateX(${num}px)`
+    }
+
+
+  });
+
   left.addEventListener('click', function () {
-    num += n * item.clientWidth
-    carousel.style.transform = `translateX(${num}px)`
-    return sliderIndex -= 1
+    if (clickCount > 0) {
+      clickCount--;
+      num += n * item.clientWidth
+      carousel.style.transform = `translateX(${num}px)`
+    }
   });
 
 
