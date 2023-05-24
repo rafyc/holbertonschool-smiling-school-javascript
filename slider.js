@@ -1,10 +1,14 @@
 const getCourse = () => {
+
   var xhttp = new XMLHttpRequest();
   var loader = document.getElementById("loader-container");
+
   xhttp.onreadystatechange = function () {
+
     if (this.readyState == 4 && this.status == 200) {
       var jsonArray = JSON.parse(this.responseText);
       let length = jsonArray.length
+
       for (let i = 0; i < length; i++) {
         let index = i
         let image = jsonArray[i].thumb_url
@@ -16,15 +20,21 @@ const getCourse = () => {
         let time = jsonArray[i].duration
         constructCourse(image, titre, desc, author, authorPic, rating, time)
       }
-      createCourseSlider()
+
+      createCourseSlider(length)
       loader.style.display = "none";
+
     }
   }
+
   url = 'https://smileschool-api.hbtn.info/popular-tutorials'
+
   setTimeout(function () {
+
     xhttp.open("GET", url, true);
     xhttp.send();
   }, 2000)
+
 };
 
 const constructCourse = (image, titre, desc, author, authorPic, rating, time) => {
@@ -129,7 +139,7 @@ const constructCourse = (image, titre, desc, author, authorPic, rating, time) =>
 }
 
 
-const createCourseSlider = () => {
+const createCourseSlider = (length) => {
 
   window.addEventListener("resize", function () {
     result = displayWindowSize();
@@ -176,14 +186,36 @@ const createCourseSlider = () => {
 
 
   // Carousel arrows left/right
+  var w = document.documentElement.clientWidth;
+  let nbItemDisplayed
+  if (w > 1330) {
+    nbItemDisplayed = 4;
+  } else if (w > 900) {
+    nbItemDisplayed = 3;
+  } else if (w > 600) {
+    nbItemDisplayed = 2;
+  } else {
+    nbItemDisplayed = 1
+  }
+  let numberOfItems = length
+  // console.log(sliderIndex);
+  let sliderIndex = 1 + nbItemDisplayed
+
+
   right.addEventListener('click', function () {
-    // if ()
-    num -= n * item.clientWidth
-    carousel.style.transform = `translateX(${num}px)`
-  });
+    return function (event) {
+      if (sliderIndex <= numberOfItems) {
+        num -= n * item.clientWidth;
+        carousel.style.transform = `translateX(${num}px)`;
+        sliderIndex += 1;
+        console.log(sliderIndex);
+      }
+    };
+  }(numberOfItems));
   left.addEventListener('click', function () {
     num += n * item.clientWidth
     carousel.style.transform = `translateX(${num}px)`
+    return sliderIndex -= 1
   });
 
 
