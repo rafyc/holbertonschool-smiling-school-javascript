@@ -1,233 +1,113 @@
+const getCourse = async () => {
+  const loader = document.getElementById("loader-container");
+  const url = 'https://smileschool-api.hbtn.info/popular-tutorials';
 
+  try {
+    const response = await fetch(url);
+    const jsonArray = await response.json();
+    const length = jsonArray.length;
 
-const getCourse = () => {
+    jsonArray.forEach((course) => {
+      const { thumb_url, title, 'sub-title': subTitle, author, author_pic_url, star, duration } = course;
+      constructCourse(thumb_url, title, subTitle, author, author_pic_url, star, duration);
+    });
 
-  var xhttp = new XMLHttpRequest();
-  var loader = document.getElementById("loader-container");
-
-  xhttp.onreadystatechange = function () {
-
-    if (this.readyState == 4 && this.status == 200) {
-      var jsonArray = JSON.parse(this.responseText);
-      let length = jsonArray.length
-
-      for (let i = 0; i < length; i++) {
-        let index = i
-        let image = jsonArray[i].thumb_url
-        let titre = jsonArray[i].title
-        let desc = jsonArray[i]['sub-title'];
-        let author = jsonArray[i].author
-        let authorPic = jsonArray[i].author_pic_url
-        let rating = jsonArray[i].star
-        let time = jsonArray[i].duration
-        constructCourse(image, titre, desc, author, authorPic, rating, time)
-      }
-
-      createCourseSlider(length)
-      loader.style.display = "none";
-
-    }
+    createCourseSlider(length);
+    loader.style.display = "none";
+  } catch (error) {
+    console.error('Error:', error);
   }
-
-  url = 'https://smileschool-api.hbtn.info/popular-tutorials'
-
-  setTimeout(function () {
-
-    xhttp.open("GET", url, true);
-    xhttp.send();
-  }, 2000)
-
 };
 
-const constructCourse = (image, titre, desc, author, authorPic, rating, time) => {
-  // Create the first <div> element with class "video_element"
-  var divVideoElement1 = document.createElement("div");
-  divVideoElement1.classList.add("video_element");
+const constructCourse = (image, title, subTitle, author, authorPic, rating, time) => {
+  const videoElement = document.createElement("div");
+  videoElement.classList.add("video_element");
 
-  // Create the first <div> element with class "player_container"
-  var divPlayerContainer1 = document.createElement("div");
-  divPlayerContainer1.classList.add("player_container");
+  const playerContainer = document.createElement("div");
+  playerContainer.classList.add("player_container");
 
-  // Create the first <div> element with class "video_content"
-  var divVideoContent1 = document.createElement("div");
-  divVideoContent1.classList.add("video_content");
+  const videoContent = document.createElement("div");
+  videoContent.classList.add("video_content");
 
-  // Create the <img> element with src and alt attributes
-  var imgPreview1 = document.createElement("img");
-  imgPreview1.src = image;
-  imgPreview1.alt = "";
+  const imgPreview = document.createElement("img");
+  imgPreview.src = image;
+  imgPreview.alt = "";
 
-  // Create the <img> element for the play button
-  var imgPlay1 = document.createElement("img");
-  imgPlay1.src = "./assets/play.png";
-  imgPlay1.alt = "player";
-  imgPlay1.classList.add("player");
+  const imgPlay = document.createElement("img");
+  imgPlay.src = "./assets/play.png";
+  imgPlay.alt = "player";
+  imgPlay.classList.add("player");
 
-  // Create the <div> element with class "video_author"
-  var divVideoAuthor1 = document.createElement("div");
-  divVideoAuthor1.classList.add("video_author");
+  const videoAuthor = document.createElement("div");
+  videoAuthor.classList.add("video_author");
 
-  // Create the <h2> element for the video title
-  var h2Title1 = document.createElement("h2");
-  h2Title1.innerText = titre;
+  const h2Title = document.createElement("h2");
+  h2Title.innerText = title;
 
-  // Create the <p> element for the video description
-  var pDescription1 = document.createElement("p");
-  pDescription1.innerText = desc;
+  const pDescription = document.createElement("p");
+  pDescription.innerText = subTitle;
 
-  // Create the <div> element with class "author"
-  var divAuthor1 = document.createElement("div");
-  divAuthor1.classList.add("author");
+  const authorContainer = document.createElement("div");
+  authorContainer.classList.add("author");
 
-  // Create the <img> element for the teacher avatar
-  var imgAvatar1 = document.createElement("img");
-  imgAvatar1.src = authorPic;
-  imgAvatar1.alt = "teacher";
-  imgAvatar1.classList.add("min_avatar");
+  const imgAvatar = document.createElement("img");
+  imgAvatar.src = authorPic;
+  imgAvatar.alt = "teacher";
+  imgAvatar.classList.add("min_avatar");
 
-  // Create the <h3> element for the teacher's name
-  var h3TeacherName1 = document.createElement("h3");
-  h3TeacherName1.innerText = author;
+  const h3TeacherName = document.createElement("h3");
+  h3TeacherName.innerText = author;
 
-  // Create the <div> element with class "rating"
-  var divRating1 = document.createElement("div");
-  divRating1.classList.add("rating");
+  const ratingContainer = document.createElement("div");
+  ratingContainer.classList.add("rating");
 
-  // Create the <div> element for the star ratings
-  var divStars1 = document.createElement("div");
-  // Create and append the star images
-  let fullStar = 5
-  let starRating = rating
-  for (var i = 0; i < rating; i++) {
-    var imgStar1 = document.createElement("img");
-    imgStar1.src = "./assets/Star.png";
-    imgStar1.alt = "star";
-    divStars1.appendChild(imgStar1);
+  const starContainer = document.createElement("div");
+  const fullStar = 5;
+  const starRating = rating;
+
+  for (let i = 0; i < rating; i++) {
+    const imgStar = document.createElement("img");
+    imgStar.src = "./assets/Star.png";
+    imgStar.alt = "star";
+    starContainer.appendChild(imgStar);
   }
-  // Create the gray star image
+
   for (let i = 0; i < fullStar - starRating; i++) {
-    var imgStarGrey1 = document.createElement("img");
-    imgStarGrey1.src = "./assets/Star_grey.png";
-    imgStarGrey1.alt = "star";
-    divStars1.appendChild(imgStarGrey1);
+    const imgStarGrey = document.createElement("img");
+    imgStarGrey.src = "./assets/Star_grey.png";
+    imgStarGrey.alt = "star";
+    starContainer.appendChild(imgStarGrey);
   }
 
+  const pDuration = document.createElement("p");
+  pDuration.innerText = time;
 
-  // Create the <p> element for the video duration
-  var pDuration1 = document.createElement("p");
-  pDuration1.innerText = time;
+  authorContainer.appendChild(imgAvatar);
+  authorContainer.appendChild(h3TeacherName);
 
-  // Append the elements to build the structure
-  divAuthor1.appendChild(imgAvatar1);
-  divAuthor1.appendChild(h3TeacherName1);
+  ratingContainer.appendChild(starContainer);
+  ratingContainer.appendChild(pDuration);
 
-  divRating1.appendChild(divStars1);
-  divRating1.appendChild(pDuration1);
+  videoAuthor.appendChild(h2Title);
+  videoAuthor.appendChild(pDescription);
+  videoAuthor.appendChild(authorContainer);
+  videoAuthor.appendChild(ratingContainer);
 
-  divVideoAuthor1.appendChild(h2Title1);
-  divVideoAuthor1.appendChild(pDescription1);
-  divVideoAuthor1.appendChild(divAuthor1);
-  divVideoAuthor1.appendChild(divRating1);
+  videoContent.appendChild(imgPreview);
+  videoContent.appendChild(imgPlay);
+  videoContent.appendChild(videoAuthor);
 
-  divVideoContent1.appendChild(imgPreview1);
-  divVideoContent1.appendChild(imgPlay1);
-  divVideoContent1.appendChild(divVideoAuthor1);
+  playerContainer.appendChild(videoContent);
+  videoElement.appendChild(playerContainer);
 
-  divPlayerContainer1.appendChild(divVideoContent1)
-  divVideoElement1.appendChild(divPlayerContainer1)
+  const videosContainer = document.querySelector('.video_container');
+  videosContainer.appendChild(videoElement);
+};
 
-  var videosContainer = document.querySelector('.video_container');
-  videosContainer.appendChild(divVideoElement1);
-}
 const initSlider = (length) => {
-  window.addEventListener("resize", function () {
-    nbElem = displayWindowSize();
-    function displayWindowSize() {
-      let nbItemDisplayed = 4
-      // Get width and height of the window excluding scrollbars
-      var w = document.documentElement.clientWidth;
-
-      if (w > 1330) {
-        nbItemDisplayed = 4;
-      } else if (w > 900) {
-        nbItemDisplayed = 3;
-      } else if (w > 600) {
-        nbItemDisplayed = 2;
-      } else {
-        nbItemDisplayed = 1
-      }
-      return nbItemDisplayed
-    }
-
-
-    // let videoElement = document.querySelector('.video_element');
-    let videoElementWidth = 275
-    let sliderWidth = nbElem * videoElementWidth
-    let container = document.querySelector('.video')
-    container.style.maxWidth = `${sliderWidth}px`
-
-    // Carousel arrows left/right
-    let carousel = document.querySelector('.video_container');
-    let left = document.querySelector('.video-arrow-left');
-    let right = document.querySelector('.video-arrow-right');
-    let item = document.querySelector('.video_element');
-    // how many elements to scroll
-    let n = 1;
-    let num = 0
-    let clickCount = 0;
-
-    right.addEventListener('click', function () {
-
-      if (clickCount < (length - (nbElem))) {
-        clickCount++;
-        num -= n * item.clientWidth
-        carousel.style.transform = `translateX(${num}px)`
-      }
-    });
-
-    left.addEventListener('click', function () {
-      if (clickCount > 0) {
-        clickCount--;
-        num += n * item.clientWidth
-        carousel.style.transform = `translateX(${num}px)`
-      }
-    });
-  })
-}
-
-
-const createCourseSlider = (length) => {
-
-  window.addEventListener("resize", function () {
-    nbElem = displayWindowSize();
-
-    function displayWindowSize() {
-      let nbItemDisplayed = 4
-      // Get width and height of the window excluding scrollbars
-      var w = document.documentElement.clientWidth;
-
-      if (w > 1330) {
-        nbItemDisplayed = 4;
-      } else if (w > 900) {
-        nbItemDisplayed = 3;
-      } else if (w > 600) {
-        nbItemDisplayed = 2;
-      } else {
-        nbItemDisplayed = 1
-      }
-      return nbItemDisplayed
-    }
-
-    // responsive
-
-    // Main elements
-
-  });
-
-  function displayWindowSize() {
-    let nbItemDisplayed = 4
-    // Get width and height of the window excluding scrollbars
-    var w = document.documentElement.clientWidth;
+  const displayWindowSize = () => {
+    let nbItemDisplayed = 4;
+    const w = document.documentElement.clientWidth;
 
     if (w > 1330) {
       nbItemDisplayed = 4;
@@ -236,52 +116,92 @@ const createCourseSlider = (length) => {
     } else if (w > 600) {
       nbItemDisplayed = 2;
     } else {
-      nbItemDisplayed = 1
+      nbItemDisplayed = 1;
     }
-    return nbItemDisplayed
-  }
 
-  let carousel = document.querySelector('.video_container');
-  let left = document.querySelector('.video-arrow-left');
-  let right = document.querySelector('.video-arrow-right');
-  let item = document.querySelector('.video_element');
-  // how many elements to scroll
+    return nbItemDisplayed;
+  };
+
+  const resizeHandler = () => {
+    const nbElem = displayWindowSize();
+    const videoElementWidth = 275;
+    const sliderWidth = nbElem * videoElementWidth;
+    const container = document.querySelector('.video');
+    container.style.maxWidth = `${sliderWidth}px`;
+  };
+
+  window.addEventListener("resize", resizeHandler);
+
+  const carousel = document.querySelector('.video_container');
+  const left = document.querySelector('.video-arrow-left');
+  const right = document.querySelector('.video-arrow-right');
+  const item = document.querySelector('.video_element');
   let n = 1;
-  let num = 0
+  let num = 0;
   let clickCount = 0;
 
-  right.addEventListener('click', function () {
-
+  right.addEventListener('click', () => {
     if (clickCount < (length - (nbElem))) {
       clickCount++;
-      num -= n * item.clientWidth
-      carousel.style.transform = `translateX(${num}px)`
+      num -= n * item.clientWidth;
+      carousel.style.transform = `translateX(${num}px)`;
     }
   });
 
-  left.addEventListener('click', function () {
+  left.addEventListener('click', () => {
     if (clickCount > 0) {
       clickCount--;
-      num += n * item.clientWidth
-      carousel.style.transform = `translateX(${num}px)`
+      num += n * item.clientWidth;
+      carousel.style.transform = `translateX(${num}px)`;
     }
   });
 
-  let nbElem = displayWindowSize()
-  let container = document.querySelector('.video')
+  const nbElem = displayWindowSize();
+  const container = document.querySelector('.video');
+  const videoElement = document.querySelector('.video_element');
+  const videoElementWidth = videoElement.clientWidth;
+  const sliderWidth = nbElem * videoElementWidth;
+  container.style.maxWidth = `${sliderWidth}px`;
 
+  resizeHandler();
+};
 
-  let videoElement = document.querySelector('.video_element');
+const createCourseSlider = (length) => {
+  const displayWindowSize = () => {
+    let nbItemDisplayed = 4;
+    const w = document.documentElement.clientWidth;
 
-  let videoElementWidth = videoElement.clientWidth
+    if (w > 1330) {
+      nbItemDisplayed = 4;
+    } else if (w > 900) {
+      nbItemDisplayed = 3;
+    } else if (w > 600) {
+      nbItemDisplayed = 2;
+    } else {
+      nbItemDisplayed = 1;
+    }
 
+    return nbItemDisplayed;
+  };
 
-  let sliderWidth = nbElem * videoElementWidth
-  container.style.maxWidth = `${sliderWidth}px`
+  window.addEventListener("resize", () => {
+    const nbElem = displayWindowSize();
+    const container = document.querySelector('.video');
+    const videoElement = document.querySelector('.video_element');
+    const videoElementWidth = videoElement.clientWidth;
+    const sliderWidth = nbElem * videoElementWidth;
+    container.style.maxWidth = `${sliderWidth}px`;
+    initSlider(length);
+  });
 
+  const nbElem = displayWindowSize();
+  const container = document.querySelector('.video');
+  const videoElement = document.querySelector('.video_element');
+  const videoElementWidth = videoElement.clientWidth;
+  const sliderWidth = nbElem * videoElementWidth;
+  container.style.maxWidth = `${sliderWidth}px`;
 
+  initSlider(length);
+};
 
-  initSlider(length)
-}
-
-getCourse()
+getCourse();
