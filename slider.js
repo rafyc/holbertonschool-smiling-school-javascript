@@ -1,3 +1,5 @@
+
+
 const getCourse = () => {
 
   var xhttp = new XMLHttpRequest();
@@ -137,6 +139,52 @@ const constructCourse = (image, titre, desc, author, authorPic, rating, time) =>
   var videosContainer = document.querySelector('.video_container');
   videosContainer.appendChild(divVideoElement1);
 }
+const initSlider = (length) => {
+  var w = window.innerWidth;
+  console.log(w);
+  let nbItemDisplayed;
+  if (w > 1330) {
+    nbItemDisplayed = 4;
+  } else if (w > 900) {
+    nbItemDisplayed = 3;
+  } else if (w > 600) {
+    nbItemDisplayed = 2;
+  } else {
+    nbItemDisplayed = 1
+  }
+  // let videoElement = document.querySelector('.video_element');
+  let videoElementWidth = 275
+  let sliderWidth = nbItemDisplayed * videoElementWidth
+  let container = document.querySelector('.video')
+  container.style.maxWidth = `${sliderWidth}px`
+
+  // Carousel arrows left/right
+  let carousel = document.querySelector('.video_container');
+  let left = document.querySelector('.video-arrow-left');
+  let right = document.querySelector('.video-arrow-right');
+  let item = document.querySelector('.video_element');
+  // how many elements to scroll
+  let n = 1;
+  let num = 0
+  let clickCount = 0;
+
+  right.addEventListener('click', function () {
+    if (clickCount < (length - (nbItemDisplayed))) {
+      clickCount++;
+      num -= n * item.clientWidth
+      carousel.style.transform = `translateX(${num}px)`
+    }
+  });
+
+  left.addEventListener('click', function () {
+    if (clickCount > 0) {
+      clickCount--;
+      num += n * item.clientWidth
+      carousel.style.transform = `translateX(${num}px)`
+    }
+  });
+
+}
 
 
 const createCourseSlider = (length) => {
@@ -163,21 +211,9 @@ const createCourseSlider = (length) => {
 
     // responsive
 
-
-
-
-
-
     // Main elements
     let container = document.querySelector('.video')
-    let carousel = document.querySelector('.video_container');
-    let left = document.querySelector('.video-arrow-left');
-    let right = document.querySelector('.video-arrow-right');
-    let item = document.querySelector('.video_element');
-    // how many elements to scroll
-    let n = 1;
-    let num = 0
-    let clickCount = 0;
+
 
     let videoElement = document.querySelector('.video_element');
 
@@ -186,28 +222,9 @@ const createCourseSlider = (length) => {
 
     let sliderWidth = nbElem * videoElementWidth
     container.style.maxWidth = `${sliderWidth}px`
-    // Carousel arrows left/right
-
-    right.addEventListener('click', function () {
-      if (clickCount < (length - (nbElem))) {
-        clickCount++;
-        num -= n * item.clientWidth
-        carousel.style.transform = `translateX(${num}px)`
-      }
-
-
-    });
-
-    left.addEventListener('click', function () {
-      if (clickCount > 0) {
-        clickCount--;
-        num += n * item.clientWidth
-        carousel.style.transform = `translateX(${num}px)`
-      }
-    });
   });
 
+  initSlider(length)
 }
 
 getCourse()
-initResponsive()
