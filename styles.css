@@ -34,6 +34,9 @@
   .header_logo {
     width: 150px;
   }
+  .header_mobile_logo {
+    display: none;
+  }
 
   .main_title h1 {
     font-size: 100px;
@@ -628,8 +631,7 @@
     }
     .mobile-menu {
         display: flex;
-        align-items: center;
-        justify-content: space-around;
+        align-items: flex-end;
     }
     .menu-containter {
         display: block;
@@ -644,12 +646,7 @@
         align-items: center;
         padding: 0;
     }
-    .header-logo {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-    }
+
     ul li{
         padding-bottom: 10px;
     }
@@ -663,6 +660,17 @@
       }
       #next, #prev {
         bottom: 90px;
+      }
+      .header_logo{
+        display: none;
+      }
+      .header-logo-mobile {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+      .header_mobile_logo{
+        display: block;
       }
 
 }
