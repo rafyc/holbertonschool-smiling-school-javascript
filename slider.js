@@ -142,7 +142,7 @@ const constructCourse = (image, titre, desc, author, authorPic, rating, time) =>
 const createCourseSlider = (length) => {
 
   window.addEventListener("resize", function () {
-    result = displayWindowSize();
+    nbElem = displayWindowSize();
 
     function displayWindowSize() {
       let nbItemDisplayed = 4
@@ -162,67 +162,50 @@ const createCourseSlider = (length) => {
     }
 
     // responsive
+
+
+
+
+
+
+    // Main elements
+    let container = document.querySelector('.video')
+    let carousel = document.querySelector('.video_container');
+    let left = document.querySelector('.video-arrow-left');
+    let right = document.querySelector('.video-arrow-right');
+    let item = document.querySelector('.video_element');
+    // how many elements to scroll
+    let n = 1;
+    let num = 0
+    let clickCount = 0;
+
+    let videoElement = document.querySelector('.video_element');
+
     let videoElementWidth = videoElement.clientWidth
 
-    let nbItemDisplayed = result
-    console.log(`${result}`);
-    let sliderWidth = nbItemDisplayed * videoElementWidth
+
+    let sliderWidth = nbElem * videoElementWidth
     container.style.maxWidth = `${sliderWidth}px`
+    // Carousel arrows left/right
 
+    right.addEventListener('click', function () {
+      if (clickCount < (length - (nbElem))) {
+        clickCount++;
+        num -= n * item.clientWidth
+        carousel.style.transform = `translateX(${num}px)`
+      }
+
+
+    });
+
+    left.addEventListener('click', function () {
+      if (clickCount > 0) {
+        clickCount--;
+        num += n * item.clientWidth
+        carousel.style.transform = `translateX(${num}px)`
+      }
+    });
   });
-
-  function displayWindowSize() {
-    let nbItemDisplayed = 4
-    // Get width and height of the window excluding scrollbars
-    var w = document.documentElement.clientWidth;
-
-    if (w > 1330) {
-      nbItemDisplayed = 4;
-    } else if (w > 900) {
-      nbItemDisplayed = 3;
-    } else if (w > 600) {
-      nbItemDisplayed = 2;
-    } else {
-      nbItemDisplayed = 1
-    }
-    return nbItemDisplayed
-  }
-
-  // Main elements
-  let container = document.querySelector('.video')
-  let videoElement = document.querySelector('.video_element');
-  let carousel = document.querySelector('.video_container');
-  let left = document.querySelector('.video-arrow-left');
-  let right = document.querySelector('.video-arrow-right');
-  let item = document.querySelector('.video_element');
-  // how many elements to scroll
-  let n = 1;
-  let num = 0
-  let clickCount = 0;
-  let nbElem = displayWindowSize()
-
-
-
-  // Carousel arrows left/right
-
-  right.addEventListener('click', function () {
-    if (clickCount < (length - (nbElem))) {
-      clickCount++;
-      num -= n * item.clientWidth
-      carousel.style.transform = `translateX(${num}px)`
-    }
-
-
-  });
-
-  left.addEventListener('click', function () {
-    if (clickCount > 0) {
-      clickCount--;
-      num += n * item.clientWidth
-      carousel.style.transform = `translateX(${num}px)`
-    }
-  });
-
 
 }
 
