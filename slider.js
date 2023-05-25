@@ -8,8 +8,7 @@ const getCourse = async () => {
     const length = jsonArray.length;
 
     jsonArray.forEach((course) => {
-      const { thumb_url, title, 'sub-title': subTitle, author, author_pic_url, star, duration } = course;
-      constructCourse(thumb_url, title, subTitle, author, author_pic_url, star, duration);
+      constructCourse(course);
     });
 
     createCourseSlider(length);
@@ -19,84 +18,61 @@ const getCourse = async () => {
   }
 };
 
-const constructCourse = (image, title, subTitle, author, authorPic, rating, time) => {
-  const videoElement = document.createElement("div");
-  videoElement.classList.add("video_element");
+const createDOMElement = (tagName, classNames = [], attributes = {}) => {
+  const element = document.createElement(tagName);
+  element.classList.add(...classNames);
+  Object.entries(attributes).forEach(([key, value]) => {
+    element.setAttribute(key, value);
+  });
+  return element;
+};
 
-  const playerContainer = document.createElement("div");
-  playerContainer.classList.add("player_container");
-
-  const videoContent = document.createElement("div");
-  videoContent.classList.add("video_content");
-
-  const imgPreview = document.createElement("img");
-  imgPreview.src = image;
-  imgPreview.alt = "";
-
-  const imgPlay = document.createElement("img");
-  imgPlay.src = "./assets/play.png";
-  imgPlay.alt = "player";
-  imgPlay.classList.add("player");
-
-  const videoAuthor = document.createElement("div");
-  videoAuthor.classList.add("video_author");
-
-  const h2Title = document.createElement("h2");
+const constructCourse = (course) => {
+  const { thumb_url, title, 'sub-title': subTitle, author, author_pic_url, star, duration } = course;
+  const videoElement = createDOMElement("div", ["video_element"]);
+  const playerContainer = createDOMElement("div", ["player_container"]);
+  const videoContent = createDOMElement("div", ["video_content"]);
+  const imgPreview = createDOMElement("img", [], { src: thumb_url, alt: "" });
+  const imgPlay = createDOMElement("img", ["player"], { src: "./assets/play.png", alt: "player" });
+  const videoAuthor = createDOMElement("div", ["video_author"]);
+  const h2Title = createDOMElement("h2", [], {});
   h2Title.innerText = title;
-
-  const pDescription = document.createElement("p");
+  const pDescription = createDOMElement("p", [], {});
   pDescription.innerText = subTitle;
-
-  const authorContainer = document.createElement("div");
-  authorContainer.classList.add("author");
-
-  const imgAvatar = document.createElement("img");
-  imgAvatar.src = authorPic;
-  imgAvatar.alt = "teacher";
-  imgAvatar.classList.add("min_avatar");
-
-  const h3TeacherName = document.createElement("h3");
+  const authorContainer = createDOMElement("div", ["author"]);
+  const imgAvatar = createDOMElement("img", ["min_avatar"], { src: author_pic_url, alt: "teacher" });
+  const h3TeacherName = createDOMElement("h3", [], {});
   h3TeacherName.innerText = author;
+  const ratingContainer = createDOMElement("div", ["rating"]);
+  const starContainer = createDOMElement("div");
 
-  const ratingContainer = document.createElement("div");
-  ratingContainer.classList.add("rating");
-
-  const starContainer = document.createElement("div");
   const fullStar = 5;
-  const starRating = rating;
+  const starRating = star;
 
-  for (let i = 0; i < rating; i++) {
-    const imgStar = document.createElement("img");
-    imgStar.src = "./assets/Star.png";
-    imgStar.alt = "star";
+  for (let i = 0; i < starRating; i++) {
+    const imgStar = createDOMElement("img", [], { src: "./assets/Star.png", alt: "star" });
     starContainer.appendChild(imgStar);
   }
 
   for (let i = 0; i < fullStar - starRating; i++) {
-    const imgStarGrey = document.createElement("img");
-    imgStarGrey.src = "./assets/Star_grey.png";
-    imgStarGrey.alt = "star";
+    const imgStarGrey = createDOMElement("img", [], { src: "./assets/Star_grey.png", alt: "star" });
     starContainer.appendChild(imgStarGrey);
   }
 
-  const pDuration = document.createElement("p");
-  pDuration.innerText = time;
+  const pDuration = createDOMElement("p", [], {});
+  pDuration.innerText = duration;
 
   authorContainer.appendChild(imgAvatar);
   authorContainer.appendChild(h3TeacherName);
-
   ratingContainer.appendChild(starContainer);
   ratingContainer.appendChild(pDuration);
-
   videoAuthor.appendChild(h2Title);
   videoAuthor.appendChild(pDescription);
   videoAuthor.appendChild(authorContainer);
   videoAuthor.appendChild(ratingContainer);
-
   videoContent.appendChild(imgPreview);
   videoContent.appendChild(imgPlay);
   videoContent.appendChild(videoAuthor);
-
   playerContainer.appendChild(videoContent);
   videoElement.appendChild(playerContainer);
 
@@ -104,26 +80,9 @@ const constructCourse = (image, title, subTitle, author, authorPic, rating, time
   videosContainer.appendChild(videoElement);
 };
 
-const initSlider = (length) => {
-  const displayWindowSize = () => {
-    let nbItemDisplayed = 4;
-    const w = document.documentElement.clientWidth;
-
-    if (w > 1330) {
-      nbItemDisplayed = 4;
-    } else if (w > 900) {
-      nbItemDisplayed = 3;
-    } else if (w > 600) {
-      nbItemDisplayed = 2;
-    } else {
-      nbItemDisplayed = 1;
-    }
-
-    return nbItemDisplayed;
-  };
-
+const initSlider = (length, nbElem) => {
   const resizeHandler = () => {
-    const nbElem = displayWindowSize();
+    nbElem = displayWindowSize();
     const videoElementWidth = 275;
     const sliderWidth = nbElem * videoElementWidth;
     const container = document.querySelector('.video');
@@ -141,7 +100,7 @@ const initSlider = (length) => {
   let clickCount = 0;
 
   right.addEventListener('click', () => {
-    if (clickCount < (length - (nbElem))) {
+    if (clickCount < length - nbElem) {
       clickCount++;
       num -= n * item.clientWidth;
       carousel.style.transform = `translateX(${num}px)`;
@@ -156,52 +115,35 @@ const initSlider = (length) => {
     }
   });
 
-  const nbElem = displayWindowSize();
-  const container = document.querySelector('.video');
-  const videoElement = document.querySelector('.video_element');
-  const videoElementWidth = videoElement.clientWidth;
-  const sliderWidth = nbElem * videoElementWidth;
-  container.style.maxWidth = `${sliderWidth}px`;
-
   resizeHandler();
 };
 
+const displayWindowSize = () => {
+  let nbItemDisplayed = 4;
+  const w = document.documentElement.clientWidth;
+
+  if (w > 1330) {
+    nbItemDisplayed = 4;
+  } else if (w > 900) {
+    nbItemDisplayed = 3;
+  } else if (w > 600) {
+    nbItemDisplayed = 2;
+  } else {
+    nbItemDisplayed = 1;
+  }
+
+  return nbItemDisplayed;
+};
+
 const createCourseSlider = (length) => {
-  const displayWindowSize = () => {
-    let nbItemDisplayed = 4;
-    const w = document.documentElement.clientWidth;
-
-    if (w > 1330) {
-      nbItemDisplayed = 4;
-    } else if (w > 900) {
-      nbItemDisplayed = 3;
-    } else if (w > 600) {
-      nbItemDisplayed = 2;
-    } else {
-      nbItemDisplayed = 1;
-    }
-
-    return nbItemDisplayed;
-  };
-
-  window.addEventListener("resize", () => {
-    const nbElem = displayWindowSize();
-    const container = document.querySelector('.video');
-    const videoElement = document.querySelector('.video_element');
-    const videoElementWidth = videoElement.clientWidth;
-    const sliderWidth = nbElem * videoElementWidth;
-    container.style.maxWidth = `${sliderWidth}px`;
-    initSlider(length);
-  });
-
-  const nbElem = displayWindowSize();
+  let nbElem = displayWindowSize();
   const container = document.querySelector('.video');
   const videoElement = document.querySelector('.video_element');
   const videoElementWidth = videoElement.clientWidth;
   const sliderWidth = nbElem * videoElementWidth;
   container.style.maxWidth = `${sliderWidth}px`;
 
-  initSlider(length);
+  initSlider(length, nbElem);
 };
 
 getCourse();
